@@ -17,6 +17,41 @@ use Symfony\Component\Validator\Validation;
 class ProductController extends AbstractController
 
 {
+
+
+
+    /**
+     * @Route("/customerView/{query}", name="customerView_product")
+     */
+    public function search(Request $request, $query){
+
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $form = $this->createFormBuilder(null)
+        ->add('query', TextType::class)
+        ->add('search', SubmitType::class, [
+            'attr' => [
+                'class' => 'btn btn-primary'
+            ]
+        ])
+        ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+           $query =  $form->get("query")->getData();
+            if ($query == 'all'){
+                $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+
+            }else {
+                $products = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
+            }
+        }
+
+        return $this->render('customer/index.html.twig', [
+        'form' => $form->createView(),
+        'products' => $products
+        ]);
+    }
+
     /**
      * @Route("/", name="list_product")
      */
