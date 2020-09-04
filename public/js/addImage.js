@@ -41,8 +41,8 @@ function updateCounter(){
 
 
 function remove(counter){
-    jQuery('#form_imagesFiles_'+counter).remove();
-    jQuery('#delButton_'+counter).remove();
+   // jQuery('#form_imagesFiles_'+counter).remove();
+    //jQuery('#delButton_'+counter).remove();
     countImgs--;
     updateCounter();
 

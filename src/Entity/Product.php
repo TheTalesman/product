@@ -6,7 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
@@ -16,26 +16,35 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Assert\Unique
      */
     private $id;
 
     /**
+     * 
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type("float")
      */
     private $price;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(
+     *      max = 4000,
+     *      maxMessage = "The description name cannot be longer than {{ limit }} characters",
+     *      allowEmptyString = true
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $stock;
 
@@ -136,7 +145,7 @@ class Product
         return $this;
     }
 
- 
+
     /**
      * @return Collection|Image[]
      */
@@ -167,6 +176,4 @@ class Product
 
         return $this;
     }
-
-   
 }

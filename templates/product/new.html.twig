@@ -4,10 +4,14 @@
 {% endblock %}
 
 {%block body %}
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
 	{{form_start(form)}}
-	<button type="button" class="btn btn-primary add-another-collection-widget page-button" data-toggle="modal" data-target="#modalImage" data-list-selector="#image-fields-list">
-		Add Images
-	</button>
+
+
 	<!-- Modal -->
 	<div class="modal fade" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalImageLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -22,10 +26,10 @@
 					<div id="image-fields-list" data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}" data-widget-tags="{{ '<div></div>'|e }}" data-widget-counter="{{ form.imagesFiles|length }}">
 						{% for imageField in form.imagesFiles %}
 							<div class="card" id={{imageField}}>
-							
-									{{ form_errors(imageField) }}
-									{{ form_widget(imageField) }}
-							
+
+
+								{{ form_widget(imageField) }}
+
 							</div>
 
 						{% endfor %}
@@ -33,17 +37,29 @@
 				</div>
 				<div class="modal-footer">
 
-					<button type="button" class="btn btn-primary add-another-collection-widget" data-list-selector="#image-fields-list">Add another image</button>
+					<button type="button" class="btn btn-primary add-another" data-list-selector="#image-fields-list">Add another image</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	{{ form_errors(form.imagesFiles) }}
+	{{ form_row(form.title)}}
+	{{ form_row(form.description)}}
 
-
-	{{form_widget(form)}}
-
-
+	{% if form.imagesFiles.vars.errors|length > 0 %}
+		<ul class="form-errors name">
+			{% for error in form.imagesFiles.vars.errors %}
+				{{ error }}
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<button type="button" class="btn btn-primary add-another page-button" data-toggle="modal" data-target="#modalImage" data-list-selector="#image-fields-list">
+		Add Images
+	</button>
+	<span id="countImgs">
+		{{form.imagesFiles|length}}
+		Images added.</span>
 	{{form_end(form)}}
 
 {% endblock %}
