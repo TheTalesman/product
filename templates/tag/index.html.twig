@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Tags
+{% endblock %}
+
+{%block body %}
+	<h1>Tags</h1>
+
+	{% if tags  %}
+		<table id="table" class="table table-striped">
+			<thead>
+				<tr>
+				<th>Tag Name
+					</th>
+					<th>Products
+					</th>
+				
+				</tr>
+			</thead>
+			<tbody>
+				{% for tag in tags %}
+					<tr>
+						<td>
+					{{tag.name}}
+						</td>
+						<td>
+								{% if tag.getProduct() %}
+						{% for product in tag.getProduct() %}
+						<span>{{product|length}}</span>
+						{% endfor %}
+						
+							{% endif %}
+						</td>
+						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	{% else %}
+		<p>No tags to display</p>
+	{% endif %}
+
+
+{% endblock %}
