@@ -1,13 +1,13 @@
 # Product Crud
 This is a work challenge for a job at Flexy made with Symphony 5.1. The Project consists of a basic Crud application of products containing tags and images associated.
 
-# Requirements
+## Requirements
 PHP 7.2.5 or greater, Composer, MySQL.
 
-#Tech
+## Tech
 Symphony 5.1, Twig, Docker.
 
-TODO
+## TODO
 - [ ] DOCKERIZE 
 - [ ] FINISH THIS README
 - [ ] IMPLEMENT FRONT LAYOUT WITH UX UPGRADE
