@@ -65,6 +65,7 @@ class ProductController extends AbstractController
                     'attr' => ['class' => ''],
                 ],
                 'allow_add'=>true,
+                'label' => " "
                 
             ))
             
@@ -105,10 +106,10 @@ class ProductController extends AbstractController
 
                     
                     $image = new Image();
-                    $image->setName($newFilename);
+                    $image->setName($originalFilename);
                     $image->setTitle($file["title"]);
                     $image->setProduct($product);
-                    $image->setPath($originalFilename);
+                    $image->setPath("../uploads/images/".$newFilename);
                     $em->persist($image);
                   
                 }
@@ -170,7 +171,8 @@ class ProductController extends AbstractController
     public function show($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        return $this->render('product/show.html.twig', array('product' => $product));
+        $images = $product->getImages();
+        return $this->render('product/show.html.twig', array('product' => $product, 'images' => $images));
     }
 
 
@@ -181,8 +183,7 @@ class ProductController extends AbstractController
     public function delete(Request $request, $id){
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         $entityManager = $this->getDoctrine()->getManager();
-        $product->clearImages();
-        $product->clearTags();
+       
         $entityManager->remove($product);
         $entityManager->flush();
      

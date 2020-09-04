@@ -45,7 +45,7 @@ class Product
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product", cascade="remove")
      */
     private $images;
 
@@ -136,13 +136,7 @@ class Product
         return $this;
     }
 
-    
-    public function clearTags(): self
-    {
-        $this->tags = null;
-        return $this;
-    }
-
+ 
     /**
      * @return Collection|Image[]
      */
@@ -174,9 +168,5 @@ class Product
         return $this;
     }
 
-    public function clearImages(): self
-    {
-        $this->clearImages = null;
-        return $this;
-    }
+   
 }

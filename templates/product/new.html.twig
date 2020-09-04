@@ -1,40 +1,52 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-Adicionar Produto
+	Adicionar Produto
 {% endblock %}
 
 {%block body %}
-{{form_start(form)}}  
+	{{form_start(form)}}
+	<button type="button" class="btn btn-primary add-another-collection-widget page-button" data-toggle="modal" data-target="#modalImage" data-list-selector="#image-fields-list">
+		Add Images
+	</button>
+	<!-- Modal -->
+	<div class="modal fade" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalImageLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalImageLabel">Add Images</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="image-fields-list" data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}" data-widget-tags="{{ '<div></div>'|e }}" data-widget-counter="{{ form.imagesFiles|length }}">
+						{% for imageField in form.imagesFiles %}
+							<div class="card" id={{imageField}}>
+							
+									{{ form_errors(imageField) }}
+									{{ form_widget(imageField) }}
+							
+							</div>
+
+						{% endfor %}
+					</div>
+				</div>
+				<div class="modal-footer">
+
+					<button type="button" class="btn btn-primary add-another-collection-widget" data-list-selector="#image-fields-list">Add another image</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
- <div class="row">
-  <div class="col-lg-6">
-<button type="button"
-        class="add-another-collection-widget"
-        data-list-selector="#image-fields-list">Add another image</button>
-
-<div style="height:200px">
- <div id="image-fields-list"
-        data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}"
-        data-widget-tags="{{ '<div></div>'|e }}"
-        data-widget-counter="{{ form.imagesFiles|length }}">
-    {% for imageField in form.imagesFiles %}
-        <div>
-            {{ form_errors(imageField) }}
-            {{ form_widget(imageField) }}
-        </div>
-    {% endfor %}
-    </div>
-
-    </div>
-    </div>
-     <div class="col-lg-6">
-{{form_widget(form)}}
+	{{form_widget(form)}}
 
 
-{{form_end(form)}}  
-</div>
-</div>
-{% endblock %}{% block javascripts %}
-	<script src="../js/add.js"></script>
+	{{form_end(form)}}
+
+{% endblock %}
+{% block javascripts %}
+	<script src="../js/addImage.js"></script>
 {% endblock %}
