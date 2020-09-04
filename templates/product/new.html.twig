@@ -5,6 +5,36 @@ Adicionar Produto
 
 {%block body %}
 {{form_start(form)}}  
-{{form_widget(form)}}  
+
+
+ <div class="row">
+  <div class="col-lg-6">
+<button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#image-fields-list">Add another image</button>
+
+<div style="height:200px">
+ <div id="image-fields-list"
+        data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}"
+        data-widget-tags="{{ '<div></div>'|e }}"
+        data-widget-counter="{{ form.imagesFiles|length }}">
+    {% for imageField in form.imagesFiles %}
+        <div>
+            {{ form_errors(imageField) }}
+            {{ form_widget(imageField) }}
+        </div>
+    {% endfor %}
+    </div>
+
+    </div>
+    </div>
+     <div class="col-lg-6">
+{{form_widget(form)}}
+
+
 {{form_end(form)}}  
+</div>
+</div>
+{% endblock %}{% block javascripts %}
+	<script src="../js/add.js"></script>
 {% endblock %}

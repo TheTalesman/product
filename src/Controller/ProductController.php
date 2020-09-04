@@ -5,11 +5,16 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\{Product, Tag, Image};
+use App\Form\Type\ImageType;
 use Symfony\Component\HttpFoundation\{Response,Request};
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Form\Extension\Core\Type\{TextType, TextAreaType, SubmitType};
+use Symfony\Component\Form\Extension\Core\Type\{TextType, TextareaType, SubmitType, FileType,CollectionType};
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductController extends AbstractController
+
 {
     /**
      * @Route("/", name="list_product")
@@ -31,14 +36,16 @@ class ProductController extends AbstractController
      * @Route("/product/new", name="new_product", priority=3)
      * @Method({"GET","POST"})
      */
-    public function new(Request $request)
+    public function new(Request $request, SluggerInterface $slugger)
     {
         $product = new Product();
+        $image = new Image();
+        $image->setTitle("teste");
         $form = $this->createFormBuilder($product)
             ->add('title', TextType::class, array(
                 'attr' => array('class' => 'form-control')
             ))
-            ->add('description', TextAreaType::class, array(
+            ->add('description', TextareaType::class, array(
                 'required' => false,
                 'attr' => array('class' => 'form-control')
             ))
@@ -50,6 +57,18 @@ class ProductController extends AbstractController
                 'required' => false,
                 'attr' => array('class' => 'form-control')
             ))
+            ->add('imagesFiles', CollectionType::class,array(
+                'mapped' =>false,
+                'entry_type' => ImageType::class,
+                // these options are passed to each "email" type
+                'entry_options' => [
+                    'attr' => ['class' => ''],
+                ],
+                'allow_add'=>true,
+                
+            ))
+            
+          
 
             ->add('save', SubmitType::class, array(
                 'label' => 'Create',
@@ -59,6 +78,44 @@ class ProductController extends AbstractController
 
         $form->handleRequest($request);
         if ( $form->isSubmitted() && $form->isValid()) {
+            //Trata imagens
+            
+
+            $files=$form->get("imagesFiles")->getData();
+           
+          
+            if ($files) {
+
+                foreach ($files as $file){
+                    $em=$this->getDoctrine()->getManager();
+                  
+                    $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file["file"]->guessExtension();
+
+                    try {
+                        $file["file"]->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        var_dump($e);
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    
+                    $image = new Image();
+                    $image->setName($newFilename);
+                    $image->setTitle($file["title"]);
+                    $image->setProduct($product);
+                    $image->setPath($originalFilename);
+                    $em->persist($image);
+                  
+                }
+            }
+
+
+
             $product = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
@@ -85,7 +142,7 @@ class ProductController extends AbstractController
             ->add('title', TextType::class, array(
                 'attr' => array('class' => 'form-control')
             ))
-            ->add('description', TextAreaType::class, array(
+            ->add('description', TextareaType::class, array(
                 'required' => false,
                 'attr' => array('class' => 'form-control')
             ))
