@@ -97,7 +97,7 @@ public function buildForm($product){
                     'constraints' => [
                         new File([
                             'maxSize' => '5M',
-                            'maxSizeMessage' => 'Alameda'
+                            'maxSizeMessage' => 'File must be inferior to 5MB'
                         ])
                     ],
                   ]),
@@ -136,7 +136,7 @@ public function buildForm($product){
                     $image->setName($originalFilename);
                     $image->setTitle($file["title"]);
                     $image->setProduct($product);
-                    $image->setPath("../uploads/images/" . $newFilename);
+                    $image->setPath("uploads/images/" . $newFilename);
                     $em->persist($image);
                 }
             }
