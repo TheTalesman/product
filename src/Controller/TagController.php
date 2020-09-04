@@ -13,7 +13,10 @@ class TagController extends AbstractController
      */
     public function index()
     {
-        $tags = $this->getDoctrine()->getRepository(Tag::class)->findAll();
+
+        
+        $tags = $this->getDoctrine()->getRepository(Tag::class)->findMostUsedTags();
+        
         return $this->render('tag/index.html.twig', [
             'controller_name' => 'TagController',
             'tags' => $tags

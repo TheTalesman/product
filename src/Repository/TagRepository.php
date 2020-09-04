@@ -11,12 +11,30 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
  * @method Tag[]    findAll()
  * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Tag[]    findMostUsedTags()
  */
 class TagRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
+    }
+
+    // /**
+    //  * @return Tag[] Returns an array of Tag objects
+    //  */
+
+    public function findMostUsedTags()
+    {
+
+        return $this->createQueryBuilder('tag')
+        ->leftJoin('tag.product', 'product')
+        ->addSelect('COUNT(product.id) as cnt')
+        ->groupBy('tag.id')
+        ->orderBy('cnt', 'DESC')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->execute();
     }
 
     // /**

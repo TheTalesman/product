@@ -1,38 +1,37 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-	Tags
+	Top 10 Tags
 {% endblock %}
 
 {%block body %}
-	<h1>Tags</h1>
+	<h1>	Top 10 Tags
+</h1>
 
 	{% if tags  %}
 		<table id="table" class="table table-striped">
 			<thead>
 				<tr>
-				<th>Tag Name
+					<th>Tag Name
 					</th>
 					<th>Products
 					</th>
-				
+
 				</tr>
 			</thead>
 			<tbody>
 				{% for tag in tags %}
+					
 					<tr>
 						<td>
-					{{tag.name}}
+							{{tag[0].name}}
 						</td>
 						<td>
-								{% if tag.getProduct() %}
-						{% for product in tag.getProduct() %}
-						<span>{{product|length}}</span>
-						{% endfor %}
+						{{tag['cnt']}}
 						
-							{% endif %}
 						</td>
-						
+
 					</tr>
+				
 				{% endfor %}
 			</tbody>
 		</table>
