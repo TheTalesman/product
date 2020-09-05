@@ -27,10 +27,15 @@ class ProductController extends AbstractController
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         $form = $this->createFormBuilder(null)
-        ->add('query', TextType::class)
+        ->add('query', TextType::class, [
+            'attr' => [
+                'class' => 'form-control',
+                'label' => 'Search'
+            ]
+        ])
         ->add('search', SubmitType::class, [
             'attr' => [
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-primary right'
             ]
         ])
         ->getForm();

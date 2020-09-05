@@ -5,53 +5,62 @@
 
 {%block body %}
 	<h1>Products</h1>
-    {{form(form)}}
+
+	<div class="input-group mb-3">
+		{{ form_widget(form.query)}}
+		<div class="input-group-append">
+			{{ form_widget(form.search)}}
+		</div>
+	</div>
+
 	{% if products  %}
-		<table id="table" class="table table-striped">
-			<thead>
-				<tr>
-				<th>Image
-					</th>
-					<th>Product Title
-					</th>
-					<th>Description</th>
-					<th>Price</th>
-					<th>Stock</th>
-				
-				</tr>
-			</thead>
-			<tbody>
-				{% for product in products %}
-					<tr>
-						<td>
-						{% if product.getImages() %}
-						{% for img in product.getImages() %}
-						<img  width=200 src="../{{img.path()}}" />
-						{% endfor %}
+		<div class="card-group">
+			{% for product in products %}
+
+				<div class="card" style="max-width: 18rem;">
+					{% if product.getImage(0) %}
 						
-							{% endif %}
-						</td>
-						<td>
-							{{product.title}}
-						</td>
-						<td>
-							{{product.description}}
-						</td>
-						<td>
+							<img class="card-img-top" src="../{{product.getImage(0).path()}}" alt="Card image cap">
+						
+					{% else %}
+						<img class="card-img-top" src="../img/noproduct.png" alt="Card image cap">
+
+					{% endif %}
+					<div class="card-body">
+						<h5 class="card-title">
+							{{product.title}}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">R$
 							{{product.price}}
-						</td>
-						<td>
-							{{product.stock}}
-						</td>
-						
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+						</h6>
+						<p class="card-text">{{product.description}}</p>
+						<a href="#" class="btn btn-light form-control">Buy</a>
+						<div class="card-footer">
+							{% if product.stock > 0 %}
+								<small class="text-muted">Stock:
+									{{product.stock}}</small>
+							{% else %}
+								<small class="text-muted">Not in stock!</small>
+							{% endif %}
+
+						{% if product.getTags() %}
+						<ul class="myTags" style=" overflow: hidden;">
+									{% for tag in product.getTags() %}
+						<li>{{tag.name}}</li>
+						{% endfor %}
+						</ul>
+						{% endif %}
+
+						</div>
+
+					</div>
+				</div>
+			{% endfor %}
+		</div>
 
 	{% else %}
 		<p>No products to display</p>
 	{% endif %}
-
-
+{% endblock %}
+{% block javascripts %}
+	<script src="../js/addImage.js"></script>
 {% endblock %}

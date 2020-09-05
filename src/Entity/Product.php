@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
@@ -153,6 +154,15 @@ class Product
     {
         return $this->images;
     }
+
+    /**
+     * @return Image
+     */
+    public function getImage($index): ?Image
+    {
+        return $this->images[$index];
+    }
+
 
     public function addImage(Image $image): self
     {
