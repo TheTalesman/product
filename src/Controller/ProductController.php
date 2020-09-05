@@ -24,10 +24,9 @@ class ProductController extends AbstractController
     public function __construct(ImageUploader $imgUploader)
     {
         $this->imgUploader = $imgUploader;
-        
     }
 
- 
+
     /**
      * @Route("/customerView/{query}", name="customerView_product")
      */
@@ -128,7 +127,7 @@ class ProductController extends AbstractController
      */
     public function new(Request $request, SluggerInterface $slugger, ValidatorInterface $validator)
     {
-        $product = new Product(null,null,null,null);
+        $product = new Product(null, null, null, null);
 
         $form = $this->buildForm($product);
 
@@ -162,7 +161,10 @@ class ProductController extends AbstractController
                 foreach ($files as $file) {
 
                     $em = $this->getDoctrine()->getManager();
-                    $image= $this->imgUploader->upload($file, $product);
+                    $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $this->slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
+                    $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
                     $em->persist($image);
                 }
             }
@@ -173,8 +175,7 @@ class ProductController extends AbstractController
             $tagsForm = explode(",", $tagsForm);
 
             foreach ($tagsForm as $tagName) {
-                $tag = new Tag();
-                $tag->setName($tagName);
+                $tag = new Tag($tagName);
                 $tag->addProduct($product);
                 $product->addTag($tag);
                 $entityManager->persist($tag);
@@ -200,7 +201,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, $id)
     {
-        $product = new Product();
+        $product = new Product(null, null, null, null);
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
         $form = $this->buildForm($product);
@@ -247,18 +248,18 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/product/save/", priority=10)
+     * Used for development
+     public function save()
+     {
+         $entityManager = $this->getDoctrine()->getManager();
+         $title = "Roupa do Goku";
+         $description = "Roupa que Goku usou para derrotar Freeza";
+         $product = new Product($title, $description, 5, 100);
+         $entityManager->persist($product);
+         $entityManager->flush();
+         
+         return new Response("Salvou produto com id " . $product->getId());
+        }
+        
      */
-    public function save()
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $product = new Product();
-        $product->setTitle("Roupa do Goku");
-        $product->setPrice(20);
-        $product->setDescription("Roupa que Goku usou para derrotar Freeza");
-        $product->setStock(5);
-        $entityManager->persist($product);
-        $entityManager->flush();
-
-        return new Response("Salvou produto com id " . $product->getId());
-    }
 }

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'inc/base.html.twig' %}
 {% block title %}
 	Products
 {% endblock %}
@@ -14,19 +14,19 @@
 	</div>
 
 	{% if products  %}
-		<div class="card-group">
+		<div class="">
 			{% for product in products %}
 
-				<div class="card" style="max-width: 18rem;">
+				<div class="card">
+
 					{% if product.getImage(0) %}
 						
-							<img class="card-img-top" src="../{{product.getImage(0).path()}}" alt="Card image cap">
+							<img class="card-img-top" style="max-height:150px" src="../{{product.getImage(0).path()}}" alt="Card image cap">
 						
 					{% else %}
 						<img class="card-img-top" src="../img/noproduct.png" alt="Card image cap">
-
 					{% endif %}
-					<div class="card-body">
+					<div class="card-body" style=" overflow:visible">
 						<h5 class="card-title">
 							{{product.title}}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">R$
@@ -60,7 +60,4 @@
 	{% else %}
 		<p>No products to display</p>
 	{% endif %}
-{% endblock %}
-{% block javascripts %}
-	<script src="../js/addImage.js"></script>
 {% endblock %}

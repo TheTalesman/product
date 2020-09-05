@@ -63,8 +63,8 @@ class Product
     {
         $this->title = $title;
         $this->description = $description;
-        $this->stock= $stock;
-        $this->price= $price;
+        $this->stock = $stock;
+        $this->price = $price;
         $this->tags = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
@@ -139,7 +139,9 @@ class Product
 
         return $this;
     }
-
+    /** 
+     * Not used
+      
     public function removeTag(Tag $tag): self
     {
         if ($this->tags->contains($tag)) {
@@ -149,6 +151,7 @@ class Product
 
         return $this;
     }
+     */
 
 
     /**

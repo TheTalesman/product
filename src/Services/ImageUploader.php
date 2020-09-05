@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Services;
 
 use App\Entity\Image;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-class ImageUploader {
+
+class ImageUploader
+{
 
     private $params;
     private $slugger;
@@ -16,10 +19,9 @@ class ImageUploader {
     }
 
 
-    public function upload($file, $product){
-        $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename = $this->slugger->slug($originalFilename);
-        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
+    public function upload($file, $product, $originalFilename, $newFilename)
+    {
+
 
         try {
             $file["file"]->move(
@@ -31,12 +33,10 @@ class ImageUploader {
             // ... handle exception if something happens during file upload
         }
 
-
-        $image = new Image();
-        $image->setName($originalFilename);
-        $image->setTitle($file["title"]);
+        $path = "uploads/images/" . $newFilename;
+        $image = new Image($originalFilename, $path, $file["title"]);
         $image->setProduct($product);
-        $image->setPath("uploads/images/" . $newFilename);
+
 
         return $image;
     }

@@ -29,8 +29,9 @@ class Tag
      */
     private $product;
 
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
         $this->product = new ArrayCollection();
     }
 
@@ -44,12 +45,6 @@ class Tag
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Product[]
@@ -67,13 +62,14 @@ class Tag
 
         return $this;
     }
+    
+    //Not being used
+    // public function removeProduct(Product $product): self
+    // {
+    //     if ($this->product->contains($product)) {
+    //         $this->product->removeElement($product);
+    //     }
 
-    public function removeProduct(Product $product): self
-    {
-        if ($this->product->contains($product)) {
-            $this->product->removeElement($product);
-        }
-
-        return $this;
-    }
+    //     return $this;
+    // }
 }

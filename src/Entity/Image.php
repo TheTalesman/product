@@ -43,6 +43,14 @@ class Image
      */
     private $product;
 
+    public function __construct($name, $path, $title)
+    {
+        $this->name = $name;
+        $this->path = $path;
+        $this->title = $title;
+     
+    }
+
     public function getId(): ?int
     {
         return $this->id;
