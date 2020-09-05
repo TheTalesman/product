@@ -59,8 +59,12 @@ class Product
      */
     private $images;
 
-    public function __construct()
+    public function __construct($title, $description, $stock, $price)
     {
+        $this->title = $title;
+        $this->description = $description;
+        $this->stock= $stock;
+        $this->price= $price;
         $this->tags = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
