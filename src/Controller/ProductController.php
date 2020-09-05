@@ -162,7 +162,7 @@ class ProductController extends AbstractController
 
                     $em = $this->getDoctrine()->getManager();
                     $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $this->slugger->slug($originalFilename);
+                    $safeFilename = $slugger->slug($originalFilename);
                     $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
                     $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
                     $em->persist($image);

@@ -7,14 +7,19 @@
 
     <div class="collapse-navbar-collapse" id="mobile-nav">
     <ul class="navbar-nav ml-auto">
+        
         <li class="nav-item">
-            <a href="{{ path('customerView_product',  {query: 'all'})  }}" class="nav-link">Customer View</a>
-        </li>
-         <li class="nav-item">
             <a href="{{ path('list_product') }}" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
+            <a href="{{ path('customerView_product',  {query: 'all'})  }}" class="nav-link">Customer View</a>
+        </li>
+         
+        <li class="nav-item">
             <a href="{{ path('new_product') }}" class="btn btn-dark">New Product    </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('list_tags') }}" class="btn btn-dark">Tags    </a>
         </li>
     </ul>
     </div>

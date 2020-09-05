@@ -9,7 +9,7 @@ use App\Entity\{Product, Tag, Image};
 class TagController extends AbstractController
 {
     /**
-     * @Route("/tag", name="tag")
+     * @Route("/tag", name="list_tags")
      */
     public function index()
     {

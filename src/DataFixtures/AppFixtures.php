@@ -34,10 +34,11 @@ class AppFixtures extends Fixture
         foreach ($this->getData() as $data) {
             $product = $this->getProduct($data);
             $this->manager->persist($product);
+            $manager->flush();
         }
 
 
-        $manager->flush();
+     
     }
 
 
@@ -66,10 +67,17 @@ class AppFixtures extends Fixture
     private function parseTags($product, $tags)
     {
         $parsedTags = explode(',', $tags);
-        foreach ($parsedTags as $tagName) {
-            $tag = new Tag($tagName);
+        foreach ($parsedTags as $k=> $tagName) {
+            $tag = $this->manager->getRepository(Tag::class)->findOneByName($tagName);
+           
+            if (is_null($tag)) {
+            
+                $tag = new Tag($tagName);
+            }
+            $tag->addProduct($product);
             $product->addTag($tag);
             $this->manager->persist($tag);
+            $this->manager->flush();
         }
 
         return $product;
