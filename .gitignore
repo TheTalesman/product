@@ -9,3 +9,5 @@
 /vendor/
 /public/uploads/*
 ###< symfony/framework-bundle ###
+/docker/.data/*
+/docker/logs/*
