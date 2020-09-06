@@ -28,8 +28,9 @@ Then go to your hosts file (c:/windows/system32/hosts in windows) edit as an adm
 ```
 
 ### Linux/Mac OS
- If you are running this from a Unix OS, run this command in a terminal
+ If you are running this from a Unix OS, run this commands in a terminal
 ```
+sudo service docker start
 chmod a+x docker/install.cmd 
 ./docker/install.cmd 
 sudo echo $(docker network inspect bridge | grep Gateway | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}') "product.local" >> /etc/hosts
