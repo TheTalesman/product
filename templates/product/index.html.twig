@@ -27,6 +27,7 @@
 						{% if product.getImages() %}
 						{% for img in product.getImages() %}
 						<img  width=200 src="{{img.path()}}" />
+						<label class="prod-label">{{img.title}}</label>
 						{% endfor %}
 						
 							{% endif %}

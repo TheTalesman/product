@@ -20,7 +20,7 @@ Symphony 5.1, Twig, Docker, PHP 7.4 or greater, Composer, MySQL, ELK Stack.
 - [ ] BUGFIX IMAGE VALIDATION
 - [ ] PAGINATION ON PRODUCT LIST
 - [ ] AUTO COMPLETE IN SEARCH BAR
-- [ ] CRUD ON IMAGES AND TAGS IS MISSING
+- [ ] CRUD ON IMAGES IS MISSING
 
 
 ## Instalation

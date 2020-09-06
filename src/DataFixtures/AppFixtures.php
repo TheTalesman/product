@@ -100,7 +100,7 @@ class AppFixtures extends Fixture
           
             $originalName = $file;
             $fileNameExploded = explode('.', $file);
-            $newFilename = $k+1 ."." . end($fileNameExploded);
+            $newFilename = $product->getTitle()." image ". ($k+1);
             $image =new Image($originalName, $file, $newFilename);
             
             $image->setProduct($product);
