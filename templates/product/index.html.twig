@@ -44,9 +44,9 @@
 							{{product.stock}}
 						</td>
 						<td>
-							<a href="{{ path('show_product', {id: product.id}) }}" class="btn btn-dark">Show</a>
-							<a href="{{ path('edit_product', {id: product.id}) }}" class="btn btn-info">Edit</a>
-							<a href="{{ path('delete_product', {id: product.id}) }}" class="btn btn-danger delete-product" }}>Delete</a>
+							<a href="{{ path('show_product', {id: product.id}) }}" class="btn btn-dark btn-block">Show</a>
+							<a href="{{ path('edit_product', {id: product.id}) }}" class="btn btn-info btn-block">Edit</a>
+							<a href="{{ path('delete_product', {id: product.id}) }}" class="btn btn-danger delete-product btn-block" }}>Delete</a>
 						</td>
 					</tr>
 				{% endfor %}

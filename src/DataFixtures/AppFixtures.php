@@ -232,7 +232,7 @@ Fourth Studio Album by Queen, signed by all members. Includes 2 classical songs:
                     'stock' => '1',
                     'price' => '200',
                     'imagesFolder' => '12',
-                    'tags' => 'LP, Rock, Musi, Old',
+                    'tags' => 'LP, Rock, Music, Old',
                 ],
                  [
                     'title' => 'Ozzy\'s Bat',

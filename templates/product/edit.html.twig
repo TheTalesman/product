@@ -1,10 +1,24 @@
 {% extends 'inc/base.html.twig' %}
 {% block title %}
-Editar Produto
+	Editar Produto
+{% endblock %}
+{%block body %}
+
+	{{form_start(form)}}
+	{{form_widget(form)}}
+	{{form_end(form)}}
+
+	<div class="hidden">
+	{% for tag in tags %}
+		{{tag}},
+	{% endfor %}
+</div>
+
 {% endblock %}
 
-{%block body %}
-{{form_start(form)}}  
-{{form_widget(form)}}  
-{{form_end(form)}}  
+{% block javascripts %}
+
+
+<script src="../js/pullTags.js"></script>
 {% endblock %}
+

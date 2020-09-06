@@ -1,0 +1,10 @@
+{{form_start(form)}}
+	<div class="input-group mb-3">
+
+		{{ form_widget(form.query)}}
+		<div class="input-group-append">
+			{{ form_widget(form)}}
+		</div>
+		<a href="{{ path('customerView_product', {query: 'all'}) }}" class="nav-link">View All</a>
+
+	</div>

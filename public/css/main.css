@@ -14,3 +14,6 @@
 .card-img-top{
     max-height:300px;
 }
+.hidden{
+    display:none;
+}

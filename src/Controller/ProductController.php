@@ -4,14 +4,14 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\{Product, Tag, Image};
+use App\Entity\{Product, Tag};
 use App\Form\Type\ImageType;
 use App\Services\ImageUploader;
-use Symfony\Component\HttpFoundation\{Response, Request};
+use App\Services\Utils;
+use Symfony\Component\HttpFoundation\{Request};
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Form\Extension\Core\Type\{TextType, TextareaType, SubmitType, FileType, CollectionType};
+use Symfony\Component\Form\Extension\Core\Type\{TextType, TextareaType, SubmitType,  CollectionType, ButtonType};
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints\{File, All};
 use Symfony\Component\Validator\Validation;
@@ -21,10 +21,13 @@ class ProductController extends AbstractController
 {
 
     private $imgUploader;
-    public function __construct(ImageUploader $imgUploader)
+    private $utils;
+    public function __construct(ImageUploader $imgUploader, Utils $utils)
     {
         $this->imgUploader = $imgUploader;
+        $this->utils = $utils;
     }
+
 
 
     /**
@@ -34,31 +37,23 @@ class ProductController extends AbstractController
     {
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        $form = $this->createFormBuilder(null)
-            ->add('query', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'label' => 'Search'
-                ]
-            ])
-            ->add('search', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary right'
-                ]
-            ])
-            ->getForm();
-
+        $form = $this->searchBar();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $query =  $form->get("query")->getData();
+
             if ($query == 'all') {
                 $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
             } else {
-                $products = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
+
+                $productsByQuery = $productsByTag =  $products = [];
+                $productsByTag = $this->getDoctrine()->getRepository(Tag::class)->findByTag($query);
+                $productsByQuery = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
+                $products = $this->utils->joinArray($products, $productsByQuery, $productsByTag );
+                
             }
         }
-
         return $this->render('customer/index.html.twig', [
             'form' => $form->createView(),
             'products' => $products
@@ -79,7 +74,7 @@ class ProductController extends AbstractController
     }
 
 
-    public function buildForm($product)
+    private function buildForm($product)
     {
         $form =  $this->createFormBuilder($product)
             ->add('title', TextType::class, array(
@@ -151,7 +146,6 @@ class ProductController extends AbstractController
             ]);
 
             if (0 !== count($violations)) {
-                // there are errors, now you can show them
                 foreach ($violations as $violation) {
                     echo $violation->getMessage() . '<br>';
                 }
@@ -204,7 +198,7 @@ class ProductController extends AbstractController
     {
         $product = new Product(null, null, null, null);
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-
+        $product->getTags();
         $form = $this->buildForm($product);
 
         $form->handleRequest($request);
@@ -213,8 +207,15 @@ class ProductController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('list_product');
         }
+        $tags = $product->getTags();
+      
+        //$images = $product->getImages();
+
         return $this->render('product/edit.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tags' => $tags,
+            
+          //  'images' => $images,
         ));
     }
 
@@ -246,6 +247,22 @@ class ProductController extends AbstractController
     }
 
 
+    private function searchBar()
+    {
+        return $this->createFormBuilder(null)
+            ->add('query', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'label' => 'Search'
+                ]
+            ])
+            ->add('search', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary right'
+                ]
+            ])
+            ->getForm();
+    }
 
     /**
      * @Route("/product/save/", priority=10)

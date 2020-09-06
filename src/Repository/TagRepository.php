@@ -28,15 +28,40 @@ class TagRepository extends ServiceEntityRepository
     {
 
         return $this->createQueryBuilder('tag')
-        ->leftJoin('tag.product', 'product')
-        ->addSelect('COUNT(product.id) as cnt')
-        ->groupBy('tag.id')
-        ->orderBy('cnt', 'DESC')
-        ->setMaxResults(10)
-        ->getQuery()
-        ->execute();
+            ->leftJoin('tag.product', 'product')
+            ->addSelect('COUNT(product.id) as cnt')
+            ->groupBy('tag.id')
+            ->orderBy('cnt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->execute();
     }
 
+    /**
+     * @return Product[]
+     */
+    public function findByTag($query)
+    {
+
+
+
+        $result = $this->createQueryBuilder('tag')
+            ->leftJoin('tag.product', 'product')
+            ->addSelect('product')
+            ->where('tag.name LIKE :query')
+
+            ->setParameter('query', "%" . $query . "%")
+            ->getQuery()
+            ->getResult();
+        $products = [];
+        foreach ($result as $tag) {
+            foreach ($tag->getProduct() as $product) {
+             
+                array_push($products, $product);
+            }
+        }
+        return $products;
+    }
     // /**
     //  * @return Tag[] Returns an array of Tag objects
     //  */
@@ -54,15 +79,13 @@ class TagRepository extends ServiceEntityRepository
     }
     */
 
-    
+
     public function findOneByName($value): ?Tag
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    
 }
