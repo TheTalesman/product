@@ -50,6 +50,7 @@ class ProductController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $query =  $form->get("query")->getData();
             if ($query == 'all') {
                 $products = $this->getDoctrine()->getRepository(Product::class)->findAll();

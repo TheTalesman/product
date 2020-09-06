@@ -5,11 +5,12 @@
 
 {%block body %}
 	<h1>Products</h1>
-
+{{form_start(form)}}
 	<div class="input-group mb-3">
+		
 		{{ form_widget(form.query)}}
 		<div class="input-group-append">
-			{{ form_widget(form.search)}}
+			{{ form_widget(form)}}
 		</div>
 	</div>
 
@@ -20,9 +21,9 @@
 				<div class="card">
 
 					{% if product.getImage(0) %}
-						
-							<img class="card-img-top" style="max-height:150px" src="../{{product.getImage(0).path()}}" alt="Card image cap">
-						
+
+						<img class="card-img-top" src="../{{product.getImage(0).path()}}">
+
 					{% else %}
 						<img class="card-img-top" src="../img/noproduct.png" alt="Card image cap">
 					{% endif %}
@@ -42,13 +43,13 @@
 								<small class="text-muted">Not in stock!</small>
 							{% endif %}
 
-						{% if product.getTags() %}
-						<ul class="myTags" style=" overflow: hidden;">
+							{% if product.getTags() %}
+								<ul class="myTags" style=" overflow: hidden;">
 									{% for tag in product.getTags() %}
-						<li>{{tag.name}}</li>
-						{% endfor %}
-						</ul>
-						{% endif %}
+										<li>{{tag.name}}</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
 
 						</div>
 

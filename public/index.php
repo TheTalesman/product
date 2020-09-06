@@ -12,7 +12,7 @@ require dirname(__DIR__).'/vendor/autoload.php';
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
-    Debug::enable();
+    //Debug::enable();
 }
 
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {

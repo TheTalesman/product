@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     images_directory: '%kernel.project_dir%/public/uploads/images/'
-    images_fixture_directory: 'public/img/fixture/'
+    images_fixture_directory: '/img/fixture/'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -92,15 +92,17 @@ class AppFixtures extends Fixture
         $images = [];
         
         $directory = $this->params->get('images_fixture_directory') . $imagesDir;
-        $files = glob($directory . "/*.*");
+        $files = glob("public".$directory . "/*.*");
        
         foreach ($files as $k => $file) {
+            $file = str_replace("public", "", $file);
             $file = str_replace("\\", "/", $file);
           
             $originalName = $file;
             $fileNameExploded = explode('.', $file);
-            $newFilename = $k . end($fileNameExploded);
-            $image =new Image($originalName, "../".$file, $newFilename);
+            $newFilename = $k+1 ."." . end($fileNameExploded);
+            $image =new Image($originalName, $file, $newFilename);
+            
             $image->setProduct($product);
             $this->manager->persist($image);
             $product->addImage($image);
@@ -219,7 +221,7 @@ class AppFixtures extends Fixture
                     'description' => 'Gilmour purchased the guitar, a 1969 model with a maple cap fingerboard and large headstock, in 1970 from Manny\'s Music in New York City to replace a similar guitar his parents bought him for his 21st birthday, which had been lost while touring with Pink Floyd in the United States in 1968. The Black Strat was originally a sunburst colour, but had been repainted black at Manny\'s. Since then, it has undergone numerous modifications.  ',
                     'stock' => '1',
                     'price' => '200000000',
-                    'imagesFolder' => '1',
+                    'imagesFolder' => '11',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -229,7 +231,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '2',
+                    'imagesFolder' => '12',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -239,7 +241,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '3',
+                    'imagesFolder' => '13',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -249,7 +251,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '4',
+                    'imagesFolder' => '14',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -259,7 +261,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '5',
+                    'imagesFolder' => '15',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -269,7 +271,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '6',
+                    'imagesFolder' => '16',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -279,7 +281,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '7',
+                    'imagesFolder' => '17',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -289,7 +291,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '8',
+                    'imagesFolder' => '18',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -299,7 +301,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '9',
+                    'imagesFolder' => '19',
                     'tags' => 'Guitar, Rock, Music',
                 ],
                 [
@@ -309,7 +311,7 @@ class AppFixtures extends Fixture
                 ',
                     'stock' => '1',
                     'price' => '23700000',
-                    'imagesFolder' => '10',
+                    'imagesFolder' => '20',
                     'tags' => 'Guitar, Rock, Music',
                 ]
             
