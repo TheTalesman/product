@@ -204,7 +204,7 @@ class ProductController extends AbstractController
             $tagsForm = $form->get("tags")->getData();
             $tagsForm = explode(",", $tagsForm);
             $tagsProduct = $product->getTags();
-            
+
 
             //Tag Cleanup, not proud of this logic...
             foreach ($tagsProduct as $tag) {
@@ -229,13 +229,12 @@ class ProductController extends AbstractController
         }
         $tags = $product->getTags();
 
-        //$images = $product->getImages();
+        $images = $product->getImages();
 
         return $this->render('product/edit.html.twig', array(
             'form' => $form->createView(),
             'tags' => $tags,
-
-            //  'images' => $images,
+            'images' => $images,
         ));
     }
 
@@ -283,21 +282,4 @@ class ProductController extends AbstractController
             ])
             ->getForm();
     }
-
-    /**
-     * @Route("/product/save/", priority=10)
-     * Used for development
-     public function save()
-     {
-         $entityManager = $this->getDoctrine()->getManager();
-         $title = "Roupa do Goku";
-         $description = "Roupa que Goku usou para derrotar Freeza";
-         $product = new Product($title, $description, 5, 100);
-         $entityManager->persist($product);
-         $entityManager->flush();
-         
-         return new Response("Salvou produto com id " . $product->getId());
-        }
-        
-     */
 }

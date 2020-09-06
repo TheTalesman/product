@@ -7,4 +7,8 @@ jQuery(document).ready(function () {
       });
       jQuery('.myTags').val(tags); 
       jQuery('.myTags').tagit();
+      $('.carousel-item').first().addClass('active');
+      $('#carouselExampleFade').carousel({
+        interval: 2000
+      })
 });

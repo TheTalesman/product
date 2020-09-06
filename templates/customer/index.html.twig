@@ -16,10 +16,10 @@
 
 					{% if product.getImage(0) %}
 
-						<img class="card-img-top" src="../{{product.getImage(0).path()}}">
+						<img class="card-img-top img-fluid" src="../{{product.getImage(0).path()}}">
 
 					{% else %}
-						<img class="card-img-top" src="../img/noproduct.png" alt="Card image cap">
+						<img class="card-img-top img-fluid" src="../img/noproduct.png" alt="Card image cap">
 					{% endif %}
 					<div class="card-body" style=" overflow:visible">
 						<h5 class="card-title">
