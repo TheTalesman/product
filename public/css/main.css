@@ -2,13 +2,15 @@
     margin:20px 0px;
 }
 .card{
-    max-width: 30%; 
-    max-height:800px;
-    float:left; 
-    margin:10px; 
+    max-width: 30%;
+    float: left;
+    margin: 10px;
     border-radius: 5px;
+    box-shadow: #666 2px 2px 10px;
+    height: 800px;
+    overflow-y: scroll;
 }
 
 .card-img-top{
-    max-height:250px;
+    max-height:300px;
 }

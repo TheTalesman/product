@@ -5,7 +5,7 @@ This is a work challenge for a job at Flexy made with Symphony 5.1. The Project 
 Docker
 
 ## Tech
-Symphony 5.1, Twig, Docker, PHP 7.4 or greater, Composer, MySQL.
+Symphony 5.1, Twig, Docker, PHP 7.4 or greater, Composer, MySQL, ELK Stack.
 
 
 ## TODO
@@ -18,7 +18,7 @@ Symphony 5.1, Twig, Docker, PHP 7.4 or greater, Composer, MySQL.
 - [ ] BUGFIX IMAGE VALIDATION
 
 ## Instalation
-
+* Make sure you have docker and docker-compose installed.
 
 ### Windows
 To install this aplication, run docker/install.cmd.
@@ -51,6 +51,14 @@ sudo ./install.cmd
 ### DONE!
 Run http://product.local in your browser!
 
+If you need to turn off docker containers:
+```
+docker-compose down
+```
+To turn it on again:
+```
+docker-compose up -d
+```
 ## Usage
     Product Crud :  http://product.local 
     Logs (Kibana): http://product.local:81
