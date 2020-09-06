@@ -8,7 +8,7 @@
 	{{form_widget(form)}}
 	{{form_end(form)}}
 
-	<div class="hidden">
+	<div id="hidTags" class="hidden">
 	{% for tag in tags %}
 		{{tag}},
 	{% endfor %}
@@ -19,6 +19,6 @@
 {% block javascripts %}
 
 
-<script src="../js/pullTags.js"></script>
+<script src="../../js/pullTags.js"></script>
 {% endblock %}
 

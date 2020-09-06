@@ -150,6 +150,9 @@
             "./public/.htaccess"
         ]
     },
+    "symfony/asset": {
+        "version": "v5.1.5"
+    },
     "symfony/cache": {
         "version": "v5.1.5"
     },

@@ -17,7 +17,7 @@ class Tag
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Assert\Unique
+     
      */
     private $id;
 
@@ -67,15 +67,15 @@ class Tag
         return $this;
     }
 
-    //Not being used
-    // public function removeProduct(Product $product): self
-    // {
-    //     if ($this->product->contains($product)) {
-    //         $this->product->removeElement($product);
-    //     }
+ 
+     public function removeProduct(Product $product): self
+     {
+       if ($this->product->contains($product)) {
+            $this->product->removeElement($product);
+         }
 
-    //     return $this;
-    // }
+         return $this;
+     }
 
     public function __toString() {
         return $this->name;

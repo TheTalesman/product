@@ -50,8 +50,7 @@ class ProductController extends AbstractController
                 $productsByQuery = $productsByTag =  $products = [];
                 $productsByTag = $this->getDoctrine()->getRepository(Tag::class)->findByTag($query);
                 $productsByQuery = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
-                $products = $this->utils->joinArray($products, $productsByQuery, $productsByTag );
-                
+                $products = $this->utils->joinArray($products, $productsByQuery, $productsByTag);
             }
         }
         return $this->render('customer/index.html.twig', [
@@ -98,9 +97,6 @@ class ProductController extends AbstractController
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'label' => false,
-
-
-
             ))
             ->add('tags', TextType::class, array(
                 'mapped' => false,
@@ -198,24 +194,48 @@ class ProductController extends AbstractController
     {
         $product = new Product(null, null, null, null);
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        $product->getTags();
+
         $form = $this->buildForm($product);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
+            $tagsForm = $form->get("tags")->getData();
+            $tagsForm = explode(",", $tagsForm);
+            $tagsProduct = $product->getTags();
+            
+
+            //Tag Cleanup, not proud of this logic...
+            foreach ($tagsProduct as $tag) {
+                $tag->removeProduct($product);
+                $product->removeTag($tag);
+            }
+
+
+
+            foreach ($tagsForm as $tagName) {
+                $tag = new Tag($tagName);
+                $tag->addProduct($product);
+                $product->addTag($tag);
+                $entityManager->persist($tag);
+            }
+
+            $product = $form->getData();
+            $entityManager->persist($product);
+
             $entityManager->flush();
             return $this->redirectToRoute('list_product');
         }
         $tags = $product->getTags();
-      
+
         //$images = $product->getImages();
 
         return $this->render('product/edit.html.twig', array(
             'form' => $form->createView(),
             'tags' => $tags,
-            
-          //  'images' => $images,
+
+            //  'images' => $images,
         ));
     }
 

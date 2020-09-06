@@ -17,7 +17,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Assert\Unique
+     *
      */
     private $id;
 
@@ -139,19 +139,21 @@ class Product
 
         return $this;
     }
-    /** 
-     * Not used
-      
+  
+    
     public function removeTag(Tag $tag): self
     {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
-            $tag->removeProduct($this);
+            // set the owning side to null (unless already changed)
+            if ($tag->getProduct() === $this) {
+                $tag->setProduct(null);
+            }
         }
 
         return $this;
     }
-     */
+     
 
 
     /**
