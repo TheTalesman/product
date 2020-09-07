@@ -25,7 +25,7 @@
 					<div class="card-body d-flex flex-column" style=" overflow:visible">
 						<h5 class="card-title">
 							{{product.title}}</h5>
-						<h6 class="card-subtitle mb-2 text-muted">R$
+						<h6 class="card-subtitle mb-2 text-muted">$
 							{{product.price}}
 						</h6>
 						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }} <a href={{path('show_product', {id: product.id}) }}>Read More</a></p>
@@ -37,11 +37,13 @@
 							{% else %}
 								<small class="text-muted">Not in stock!</small>
 							{% endif %}
-
+<hr>
 							{% if product.getTags() %}
-								<ul class="myTags" style=" overflow: hidden;">
+							<h6>Tags</h6>
+								<ul class="readTags" style=" overflow: hidden;">
 									{% for tag in product.getTags() %}
-										<li>{{tag.name}}</li>
+									
+										<a class="tag" href="{{ path('customerView_product', { query: tag.name }) }}"><li>{{tag.name}}</li></a>
 									{% endfor %}
 								</ul>
 							{% endif %}

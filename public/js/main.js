@@ -21,8 +21,15 @@ jQuery(document).ready(function () {
     });
 
     $(".myTags").tagit();
+    $(".readTags").tagit({
+        readOnly : true
+    });
 
+    // $('.readTags').each($('li').click( function(e){
+        
+    //     window.location.href = '/customerView/' +$(this).find('.tagit-label').text();
 
+    // }));
 
     // $('#teste').pagination({
     //     dataSource: function(done) {
@@ -36,8 +43,6 @@ jQuery(document).ready(function () {
          
        
     // })
-
-
 
 
 });

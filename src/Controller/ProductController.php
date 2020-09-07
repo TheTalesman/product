@@ -47,7 +47,7 @@ class ProductController extends AbstractController
      */
     public function search(Request $request, $query)
     {
-
+    
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         $form = $this->searchBar();
         $form->handleRequest($request);
@@ -55,15 +55,16 @@ class ProductController extends AbstractController
 
             $query =  $form->get("query")->getData();
 
-            if ($query == 'all') {
-                $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-            } else {
+         
+        } 
+        if ($query == 'all') {
+            $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        } else {
 
-                $productsByQuery = $productsByTag =  $products = [];
-                $productsByTag = $this->getDoctrine()->getRepository(Tag::class)->findByTag($query);
-                $productsByQuery = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
-                $products = $this->utils->joinArray($products, $productsByQuery, $productsByTag);
-            }
+            $productsByQuery = $productsByTag =  $products = [];
+            $productsByTag = $this->getDoctrine()->getRepository(Tag::class)->findByTag($query);
+            $productsByQuery = $this->getDoctrine()->getRepository(Product::class)->findLike($query);
+            $products = $this->utils->joinArray($products, $productsByQuery, $productsByTag);
         }
         return $this->render('customer/index.html.twig', [
             'form' => $form->createView(),
@@ -296,17 +297,17 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('list_product');
     }
-    // /**
-    //  * @Route("/product/all", name="list_product", priority=10)
-    //  */
-    // public function all(Utils $utils)
-    // {
+    /**
+     * @Route("/product/all", name="list_product_json", priority=10)
+     */
+    public function all(Utils $utils)
+    {
 
-    //     $products = $this->getDoctrine()->getRepository(Product::class)->findAllArray();
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAllArray();
        
-    //     $response = new JsonResponse($products);
-    //     $response->send();
-    // }
+        $response = new JsonResponse($products);
+        $response->send();
+    }
 
     private function searchBar()
     {
@@ -315,6 +316,7 @@ class ProductController extends AbstractController
                 'attr' => [
                     'class' => 'form-control',
                     'label' => 'Search',
+                    'placeholder' => 'Search by title, description or tag!'
 
                 ]
             ])

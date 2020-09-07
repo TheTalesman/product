@@ -31,11 +31,16 @@ ul.tagit li.tagit-choice .tagit-label:not(a){
     color:#FFF;
 
 }
-ul.tagit li.tagit-choice{
-    background-color: #666;
+a.tag li{
+    border-radius:15px;
+    margin:0px 1px;
+    background-color: #888 ;
     font-size:12px;
+    padding:5px 10px;
+    color:#FFF;
+    border:1px #fff solid;
 }
-ul.tagit li.tagit-choice:hover{
+a.tag li:hover{
     background-color: #888;
     border:1px #fff solid;
 
@@ -47,6 +52,4 @@ ul.tagit li.tagit-choice:hover{
 .card-footer{
     text-align: center;
 }
-ul.tagit li.tagit-choice-editable{
-    padding:0.5em;
-}
+

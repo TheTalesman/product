@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Product[]    findLike($query)
  * @method Product[]    findByTag($query)
+ * @method Product[]    findAllArray()
  */
 class ProductRepository extends ServiceEntityRepository
 {
@@ -22,18 +23,18 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 
-    // /**
-    //  * @return Product[]
-    //  */
-    // public function findAllArray()
-    // {
-    //     $result = $this->createQueryBuilder('o')
+    /**
+     * @return Product[]
+     */
+    public function findAllArray()
+    {
+        $result = $this->createQueryBuilder('o')
         
-    //     ->getQuery()
-    //     ->getArrayResult();
-    // return $result;
+        ->getQuery()
+        ->getArrayResult();
+    return $result;
 
-    // }
+    }
 
 
 

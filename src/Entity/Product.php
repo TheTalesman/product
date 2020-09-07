@@ -50,12 +50,12 @@ class Product
     private $stock;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, mappedBy="product")
+     * @ORM\ManyToMany(targetEntity=Tag::class, mappedBy="product", fetch="EAGER")
      */
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product", cascade="remove")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product", cascade="remove", fetch="EAGER")
      */
     private $images;
 
