@@ -24,16 +24,18 @@
 				{% for product in products %}
 					<tr>
 						<td>
-							{% if product.getImages() %}
-							
-										{% for img in product.getImages() %}
-											
-												<img width="200" src={{img.path}} class="d-block w-100 img-fluid"/>
-												<label class="prod-label">{{img.title()}}</label>
-											
+							{% if product.getImages()|length>0 %}
 
-										{% endfor %}
-								
+								{% for img in product.getImages() %}
+
+									<img width="200" src={{img.path}} class="d-block w-100 img-fluid"/>
+									<label class="prod-label">{{img.title()}}</label>
+
+
+								{% endfor %}
+							{% else %}
+								<img class="card-img-top img-fluid" src="{{asset('../img/noproduct.png')}}" alt="Card image cap">
+
 							{% endif %}
 						</td>
 						<td>

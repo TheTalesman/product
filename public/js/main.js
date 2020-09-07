@@ -1,7 +1,13 @@
 jQuery(document).ready(function () {
     getTags();
     $('.carousel-item').first().addClass('active');
-
+    $('.carouselCustomer:odd').carousel({
+        interval: 6000
+    })
+    $('.carouselCustomer:even').carousel({
+        interval: 5000
+    })
+  
     jQuery('.add-another').click(function (e) {
         var list = jQuery(jQuery(this).attr('data-list-selector'));
         var counter = list.data('widget-counter') || list.children().length;

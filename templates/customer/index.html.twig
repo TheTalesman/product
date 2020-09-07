@@ -15,51 +15,69 @@
 
 				<div class="card">
 
-					{% if product.getImage(0) %}
+					{% if product.images|length>0 %}
+						<div id="" class="carouselCustomer carousel carousel-fade" data-ride="carousel">
+							<div class="carousel-inner">
+								{% set firstItem = product.getImages[0] %}
+								{% for image in product.getImages %}
 
-						<img class="card-img-top img-fluid" src="../{{product.getImage(0).path()}}">
+									{% if loop.first %}
+										<div class="carousel-item active">
+										{% else %}
 
-					{% else %}
-						<img class="card-img-top img-fluid" src="../img/noproduct.png" alt="Card image cap">
-					{% endif %}
-					<div class="card-body d-flex flex-column" style=" overflow:visible">
-						<h5 class="card-title">
-							{{product.title}}</h5>
-						<h6 class="card-subtitle mb-2 text-muted">$
-							{{product.price}}
-						</h6>
-						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }}
-							<a href={{path('show_product', {id: product.id} ) }}>Read More</a>
-						</p>
-						<a href="javascript:buy()" class="btn btn-light form-control mt-auto">Buy</a>
-						<div class="card-footer mt-auto">
-							{% if product.stock > 0 %}
-								<small class="text-muted">Stock:
-									{{product.stock}}</small>
-							{% else %}
-								<small class="text-muted">Not in stock!</small>
-							{% endif %}
-							<hr>
-							{% if product.getTags() %}
-								<h6>Tags</h6>
-								<ul class="readTags" style=" overflow: hidden;">
-									{% for tag in product.getTags() %}
+											<div class="carousel-item">
+											{% endif %}
+											<img src={{image.path}} class="d-block w-100 img-fluid card-img-top"/>
+											<label class="prod-label">{{image.title}}</label>
+										</div>
 
-										<a class="tag" href="/customerView/{{tag.name}}">
-											<li>{{tag.name}}</li>
-										</a>
+
 									{% endfor %}
-								</ul>
-							{% endif %}
+
+								</div>
+							</div>
+						{% else %}
+							<img class="card-img-top img-fluid" src="../img/noproduct.png" alt="Card image cap">
+						{% endif %}
+						<div class="card-body d-flex flex-column" style=" overflow:visible">
+							<h5 class="card-title">
+								{{product.title}}</h5>
+							<br>
+							<h6 class="card-subtitle mb-2 text-muted">$
+								{{product.price}}
+							</h6>
+							<p class="card-text mt-auto">{{product.description|slice(0, 200) ~ '...' }}
+								<a href={{path('show_product', {id: product.id} ) }}>Read More</a>
+							</p>
+							<a href="javascript:buy()" class="btn btn-light form-control mt-auto">Buy</a>
+							<div class="card-footer mt-auto">
+								{% if product.stock > 0 %}
+									<small class="text-muted">Stock:
+										{{product.stock}}</small>
+								{% else %}
+									<small class="text-muted">Not in stock!</small>
+								{% endif %}
+								<hr>
+								{% if product.getTags() %}
+									<h6>Tags</h6>
+									<ul class="readTags" style=" overflow: hidden;">
+										{% for tag in product.getTags() %}
+
+											<a class="tag" href="/customerView/{{tag.name}}">
+												<li>{{tag.name}}</li>
+											</a>
+										{% endfor %}
+									</ul>
+								{% endif %}
+
+							</div>
 
 						</div>
-
 					</div>
-				</div>
-			{% endfor %}
-		</div>
+				{% endfor %}
+			</div>
 
-	{% else %}
-		<p>No products to display</p>
-	{% endif %}
-{% endblock %}
+		{% else %}
+			<p>No products to display</p>
+		{% endif %}
+	{% endblock %}

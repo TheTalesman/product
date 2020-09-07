@@ -11,7 +11,8 @@ jQuery(document).ready(function () {
   $('#carouselExampleFade').carousel({
     interval: false
   })
-
+  
+  
 
 
 });
@@ -25,8 +26,12 @@ function deleteImage() {
 
     }).then(() => {
       $('.carousel-item.active').remove()
-      $('.carousel-item').first().addClass('active')
-
+      if ($('.carousel-item').length >0){
+        
+        $('.carousel-item').first().addClass('active')
+      }else {
+        $('#deleteImageBtn').remove();
+      }
     })
 
   }
