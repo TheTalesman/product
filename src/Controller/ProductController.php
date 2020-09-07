@@ -28,6 +28,18 @@ class ProductController extends AbstractController
         $this->utils = $utils;
     }
 
+    /**
+     * @Route("/", name="list_product", priority=30)
+     */
+    public function index()
+    {
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+
+        return $this->render('product/index.html.twig', [
+            'controller_name' => 'ProductController',
+            'products' => $products
+        ]);
+    }
 
 
     /**
@@ -61,18 +73,6 @@ class ProductController extends AbstractController
 
 
 
-    /**
-     * @Route("/", name="list_product")
-     */
-    public function index()
-    {
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-
-        return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
-            'products' => $products
-        ]);
-    }
 
 
     private function buildForm($product)
@@ -302,10 +302,8 @@ class ProductController extends AbstractController
     // public function all(Utils $utils)
     // {
 
-    //     $repo = $this->getDoctrine()->getRepository(Product::class);
-    //     $products = $repo->createQueryBuilder('q')
-    //         ->getQuery()
-    //         ->getArrayResult();
+    //     $products = $this->getDoctrine()->getRepository(Product::class)->findAllArray();
+       
     //     $response = new JsonResponse($products);
     //     $response->send();
     // }

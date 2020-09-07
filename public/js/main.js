@@ -58,7 +58,7 @@ function getTags() {
 }
 
 function buy() {
-    alert("No you won't! hehehe");
+    alert("Hire me! :D");
 }
 
 

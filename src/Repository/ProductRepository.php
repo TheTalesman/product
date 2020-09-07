@@ -22,6 +22,20 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 
+    // /**
+    //  * @return Product[]
+    //  */
+    // public function findAllArray()
+    // {
+    //     $result = $this->createQueryBuilder('o')
+        
+    //     ->getQuery()
+    //     ->getArrayResult();
+    // return $result;
+
+    // }
+
+
 
     /**
      * @return Product[]
@@ -37,7 +51,7 @@ class ProductRepository extends ServiceEntityRepository
         return $result;
     }
 
-  
+
 
     // /**
     //  * @return Product[] Returns an array of Product objects

@@ -28,7 +28,7 @@
 						<h6 class="card-subtitle mb-2 text-muted">R$
 							{{product.price}}
 						</h6>
-						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }}</p>
+						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }} <a href={{path('show_product', {id: product.id}) }}>Read More</a></p>
 						<a href="javascript:buy()" class="btn btn-light form-control mt-auto">Buy</a>
 						<div class="card-footer mt-auto">
 							{% if product.stock > 0 %}

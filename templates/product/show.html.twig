@@ -5,17 +5,22 @@
 
 {%block body %}
 	<h1>{{product.title}}</h1>
-	<p>{{product.description}}</p>
 	<div class="container">
 		<div class="row">
-			{% for img in images %}
-				<div class="col">
-					<img width="200" src="../{{img.path}}"/>
-					<label class="prod-label">{{img.title}}</label>
-				</div>
-			{% endfor %}
+			<div class="col">
+				<p>{{product.description}}</p>
+				<a href="javascript:buy()" class="btn btn-light form-control mt-auto">Buy</a>
+			</div>
+			<div class="col">
+				{% for img in images %}
+
+					<figure class="figure">
+						<img  src="../{{img.path}}"/>
+						<figcaption class="figure-caption prod-label">{{img.title}}</figcaption>
+					</figure>
+				{% endfor %}
+			</div>
 		</div>
-	</div>
-	<hr>
-	<a href="../">Voltar</a>
-{% endblock %}
+		<hr>
+		<a href="../">Go back</a>
+	{% endblock %}
