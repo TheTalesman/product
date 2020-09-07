@@ -1,5 +1,6 @@
 jQuery(document).ready(function () {
     getTags();
+    $('.carousel-item').first().addClass('active');
 
     jQuery('.add-another').click(function (e) {
         var list = jQuery(jQuery(this).attr('data-list-selector'));

@@ -9,7 +9,7 @@
 
 
 	{% if products  %}
-	
+
 		<div class="products">
 			{% for product in products %}
 
@@ -28,7 +28,9 @@
 						<h6 class="card-subtitle mb-2 text-muted">$
 							{{product.price}}
 						</h6>
-						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }} <a href={{path('show_product', {id: product.id}) }}>Read More</a></p>
+						<p class="card-text mt-auto">{{product.description|slice(0, 250) ~ '...' }}
+							<a href={{path('show_product', {id: product.id} ) }}>Read More</a>
+						</p>
 						<a href="javascript:buy()" class="btn btn-light form-control mt-auto">Buy</a>
 						<div class="card-footer mt-auto">
 							{% if product.stock > 0 %}
@@ -37,13 +39,15 @@
 							{% else %}
 								<small class="text-muted">Not in stock!</small>
 							{% endif %}
-<hr>
+							<hr>
 							{% if product.getTags() %}
-							<h6>Tags</h6>
+								<h6>Tags</h6>
 								<ul class="readTags" style=" overflow: hidden;">
 									{% for tag in product.getTags() %}
-									
-										<a class="tag" href="{{ path('customerView_product', { query: tag.name }) }}"><li>{{tag.name}}</li></a>
+
+										<a class="tag" href="/customerView/{{tag.name}}">
+											<li>{{tag.name}}</li>
+										</a>
 									{% endfor %}
 								</ul>
 							{% endif %}

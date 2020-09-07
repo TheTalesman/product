@@ -34,7 +34,7 @@ class ImageUploader
         }
 
         $path = "uploads/images/" . $newFilename;
-        $image = new Image($originalFilename, $path, $file["title"]);
+        $image = new Image($originalFilename, "/".$path, $file["title"]);
         $image->setProduct($product);
 
 

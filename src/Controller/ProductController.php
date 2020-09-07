@@ -182,9 +182,12 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('list_product');
         }
 
-
+        $tags = [];
+        $images = [];
         return $this->render('product/new.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tags' => $tags,
+            'images' => $images
         ));
     }
 
