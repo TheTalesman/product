@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
     getTags();
-    
+
     jQuery('.add-another').click(function (e) {
         var list = jQuery(jQuery(this).attr('data-list-selector'));
         var counter = list.data('widget-counter') || list.children().length;
@@ -21,22 +21,37 @@ jQuery(document).ready(function () {
     });
 
     $(".myTags").tagit();
-  
 
-  
+
+
+    // $('#teste').pagination({
+    //     dataSource: function(done) {
+    //         $.ajax({
+    //             type: 'GET',
+    //             url: '/product/all',
+    //             success: function(response) {
+    //                 done([response]);
+    //             }
+    //         })},
+         
+       
+    // })
+
+
+
 
 });
 
-function getTags(){
+function getTags() {
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
         tags = JSON.parse(xhr.response);
-            $("#form_query").autocomplete({
-                source: tags,
-            })
-        
-        
-        
+        $("#form_query").autocomplete({
+            source: tags,
+        })
+
+
+
     }
     xhr.open("GET", `/tag/all`);
     xhr.send();

@@ -8,7 +8,7 @@ use App\Entity\{Product, Tag};
 use App\Form\Type\ImageType;
 use App\Services\ImageUploader;
 use App\Services\Utils;
-use Symfony\Component\HttpFoundation\{Request};
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\{TextType, TextareaType, SubmitType,  CollectionType, ButtonType};
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -58,6 +58,8 @@ class ProductController extends AbstractController
             'products' => $products
         ]);
     }
+
+
 
     /**
      * @Route("/", name="list_product")
@@ -294,7 +296,19 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('list_product');
     }
+    // /**
+    //  * @Route("/product/all", name="list_product", priority=10)
+    //  */
+    // public function all(Utils $utils)
+    // {
 
+    //     $repo = $this->getDoctrine()->getRepository(Product::class);
+    //     $products = $repo->createQueryBuilder('q')
+    //         ->getQuery()
+    //         ->getArrayResult();
+    //     $response = new JsonResponse($products);
+    //     $response->send();
+    // }
 
     private function searchBar()
     {
@@ -303,7 +317,7 @@ class ProductController extends AbstractController
                 'attr' => [
                     'class' => 'form-control',
                     'label' => 'Search',
-                    
+
                 ]
             ])
             ->add('search', SubmitType::class, [

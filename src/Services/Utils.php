@@ -21,5 +21,17 @@ class Utils{
         return array_unique($array);
     }
     
+    public function turnArrayToString(array $array){
+        $array = array_unique($array);
+        $string = "[";
+        foreach ($array as $item) {
+            if ($item != ""){
+                $string = $string."\"".$item."\"".",";
+            }
+        }
+        $string = rtrim($string, ',');
+        $string .= "]";
+        return $string;
+    }
 
 }

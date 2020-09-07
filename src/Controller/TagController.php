@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\{Product, Tag, Image};
+use App\Services\Utils;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -29,18 +30,10 @@ class TagController extends AbstractController
      * @Route("/tag/all", name="list_all_tags")
      * @Method("GET")
      */
-    public function allTags()
+    public function allTags(Utils $utils)
     {
         $tags = $this->getDoctrine()->getRepository(Tag::class)->findAll();
-        $tags = array_unique($tags);
-        $treatedTag = "[";
-        foreach ($tags as $tag) {
-            if ($tag->getName() != ""){
-                $treatedTag = $treatedTag."\"".$tag."\"".",";
-            }
-        }
-        $treatedTag = rtrim($treatedTag, ',');
-        $treatedTag .= "]";
+        $treatedTag = $utils->turnArrayToString($tags);
         $response = new Response($treatedTag);
         $response->send();
     }
