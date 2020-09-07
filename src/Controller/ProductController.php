@@ -302,7 +302,8 @@ class ProductController extends AbstractController
             ->add('query', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'label' => 'Search'
+                    'label' => 'Search',
+                    
                 ]
             ])
             ->add('search', SubmitType::class, [

@@ -68,11 +68,11 @@ class AppFixtures extends Fixture
     {
         $parsedTags = explode(',', $tags);
         foreach ($parsedTags as $k=> $tagName) {
-            $tag = $this->manager->getRepository(Tag::class)->findOneByName($tagName);
+            $tag = $this->manager->getRepository(Tag::class)->findOneByName(ltrim($tagName));
            
             if (is_null($tag)) {
             
-                $tag = new Tag($tagName);
+                $tag = new Tag(ltrim($tagName));
             }
             $tag->addProduct($product);
             $product->addTag($tag);
