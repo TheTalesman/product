@@ -1,18 +1,16 @@
 {% extends 'inc/base.html.twig' %}
 {% block title %}
-	Editar Produto
+	Product Form
 {% endblock %}
 {%block body %}
 	<div class="row">
-		<div
-			class="col">
-
-
-		
-
-
+		<div class="col">
+			{% block javascripts %}
+				<script src="{{ asset('../js/editProduct.js')}}" type="text/javascript" charset="utf-8"></script>
+			{% endblock %}
 			{{form_start(form)}}
-				<!-- Modal -->
+
+			<!-- Modal -->
 			<div class="modal fade" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalImageLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -25,8 +23,8 @@
 						<div class="modal-body">
 							<div id="image-fields-list" data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}" data-widget-tags="{{ '<div></div>'|e }}" data-widget-counter="{{ form.imagesFiles|length }}">
 								{% for imageField in form.imagesFiles %}
-									<div class="card" id={{imageField}}>
-
+									<div class="card">
+										{{imageField.title}}
 
 										{{ form_widget(imageField) }}
 
@@ -47,15 +45,16 @@
 
 			{{form_end(form)}}
 			{% if tags %}
-			<div id="hidTags" class="hidden">
-				{% for tag in tags %}
-					{{tag}},
-				{% endfor %}
-			</div>
+				<div id="hidTags" class="hidden">
+					{% for tag in tags %}
+						{{tag}},
+					{% endfor %}
+				</div>
 			{% endif %}
 		</div>
 
 		<div class="col">
+
 			<a class="btn btn-info" href="#carouselExampleFade" role="button" data-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="">Previous</span>
@@ -67,9 +66,16 @@
 			<button type="button" class="btn btn-primary add-another page-button" data-toggle="modal" data-target="#modalImage" data-list-selector="#image-fields-list">
 				Add Image
 			</button>
-			<a class="btn btn-danger" role="button" href="javascript:deleteImage()">
-				Delete
-			</a>
+			{% if images|length>0 %}
+				<a class="btn btn-danger" role="button" href="javascript:deleteImage()">
+					Delete this image
+				</a>
+			{% endif %}
+			<br>
+			<span id="countImgs">
+				{{form.imagesFiles|length}}
+				Images added. New images will appear after product is saved.
+			</span>
 			<div id="carouselExampleFade" class="carousel carousel-fade" data-ride="carousel">
 				<div class="carousel-inner">
 
@@ -90,12 +96,4 @@
 			</div>
 		</div>
 	</div>
-{% endblock %}
-
-{% block javascripts %}
-	<script src="{{ asset('../js/newProduct.js')}}" type="text/javascript" charset="utf-8"></script>
-
-	<script src="{{ asset('../js/editProduct.js')}}" type="text/javascript" charset="utf-8"></script>
-
-
 {% endblock %}

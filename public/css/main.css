@@ -31,7 +31,7 @@ ul.tagit li.tagit-choice .tagit-label:not(a){
     color:#FFF;
 
 }
-a.tag li{
+a.tag li, .tagit-choice, ul.tagit li.tagit-choice-editable {
     border-radius:15px;
     margin:0px 1px;
     background-color: #888 ;
@@ -40,7 +40,7 @@ a.tag li{
     color:#FFF;
     border:1px #fff solid;
 }
-a.tag li:hover{
+a.tag li:hover, .tagit-choice:hover{
     background-color: #888;
     border:1px #fff solid;
 
@@ -53,3 +53,8 @@ a.tag li:hover{
     text-align: center;
 }
 
+#image-fields-list > div{
+    margin:20px 0px;
+    border:1px #eee solid;
+
+}

@@ -47,16 +47,14 @@ class ProductController extends AbstractController
      */
     public function search(Request $request, $query)
     {
-    
+
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         $form = $this->searchBar();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $query =  $form->get("query")->getData();
-
-         
-        } 
+        }
         if ($query == 'all') {
             $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         } else {
@@ -100,11 +98,12 @@ class ProductController extends AbstractController
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'label' => false,
+                'data_class'=>null,
             ))
             ->add('tags', TextType::class, array(
                 'mapped' => false,
                 'required' => false,
-                'attr' => array('class' => 'form-control myTags')
+                'attr' => array('class' => 'form-control myFormTags')
             ))
 
 
@@ -117,116 +116,76 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/new", name="new_product", priority=3)
+     * @Route("/product/new", name="new_product", priority=3, defaults={"id" = null})
+     * @Route("/product/edit/{id}", name="edit_product", priority=3)
      * @Method({"GET","POST"})
      */
-    public function new(Request $request, SluggerInterface $slugger, ValidatorInterface $validator)
+    public function form(Request $request, $id, SluggerInterface $slugger, ValidatorInterface $validator)
     {
+        $em = $this->getDoctrine()->getManager();
         $product = new Product(null, null, null, null);
+        if (!is_null($id)) {
+            $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        }
 
         $form = $this->buildForm($product);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $files = $form->get("imagesFiles")->getData();
-
-            $validator = Validation::createValidator();
-            $violations = $validator->validate($files, [
-
-                new All([
-                    'constraints' => [
-                        new File([
-                            'maxSize' => '5M',
-                            'maxSizeMessage' => 'File must be inferior to 5MB'
-                        ])
-                    ],
-                ]),
-            ]);
-
-            if (0 !== count($violations)) {
-                foreach ($violations as $violation) {
-                    echo $violation->getMessage() . '<br>';
-                }
-            }
-
-            if ($files) {
-
-                foreach ($files as $file) {
-
-                    $em = $this->getDoctrine()->getManager();
-                    $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
-                    $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
-                    $em->persist($image);
-                }
-            }
-
-            $entityManager = $this->getDoctrine()->getManager();
-
+            $this->validateAndPersistFiles($files, $em, $product, $slugger);
             $tagsForm = $form->get("tags")->getData();
-            $tagsForm = explode(",", $tagsForm);
-
-            foreach ($tagsForm as $tagName) {
-                $tag = new Tag($tagName);
-                $tag->addProduct($product);
-                $product->addTag($tag);
-                $entityManager->persist($tag);
-            }
-
+            $this->treatAndPersistTags($tagsForm, $em, $product);
             $product = $form->getData();
-
-            $entityManager->persist($product);
-            $entityManager->flush();
+            $em->persist($product);
+            $em->flush();
             return $this->redirectToRoute('list_product');
         }
 
-        $tags = [];
-        $images = [];
-        return $this->render('product/new.html.twig', array(
+        $tags = $product->getTags();
+
+        $images = $product->getImages();
+        return $this->render('product/form.html.twig', array(
             'form' => $form->createView(),
             'tags' => $tags,
             'images' => $images
         ));
     }
 
-
-    /**
-     * @Route("/product/edit/{id}", name="edit_product")
-     * @Method({"GET","POST"})
-     */
-    public function edit(Request $request, $id, SluggerInterface $slugger)
+    private function treatAndPersistTags($tagsForm, $em, $product)
     {
-        $product = new Product(null, null, null, null);
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $tagsForm = explode(",", $tagsForm);
+        $tagsProduct = $product->getTags();
+        //Tag Cleanup, not proud of this logic...
+        foreach ($tagsProduct as $tag) {
+            $tag->removeProduct($product);
+            $product->removeTag($tag);
+        }
 
-        $form = $this->buildForm($product);
+        foreach ($tagsForm as $tagName) {
+            $tag = new Tag($tagName);
+            $tag->addProduct($product);
+            $product->addTag($tag);
+            $em->persist($tag);
+        }
+    }
+    private function persistFiles($files, $em, $product, $slugger)
+    {
+        foreach ($files as $file) {
+            $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
+            $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
+            $em->persist($image);
+        }
+    }
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $tagsForm = $form->get("tags")->getData();
-            $tagsForm = explode(",", $tagsForm);
-            $tagsProduct = $product->getTags();
+    private function validateAndPersistFiles($files, $em, $product, $slugger)
+    {
+        if ($files) {
 
 
-            //Tag Cleanup, not proud of this logic...
-            foreach ($tagsProduct as $tag) {
-                $tag->removeProduct($product);
-                $product->removeTag($tag);
-            }
-
-
-
-            foreach ($tagsForm as $tagName) {
-                $tag = new Tag($tagName);
-                $tag->addProduct($product);
-                $product->addTag($tag);
-                $entityManager->persist($tag);
-            }
-            $files = $form->get("imagesFiles")->getData();
             $validator = Validation::createValidator();
             $violations = $validator->validate($files, [
 
@@ -234,10 +193,15 @@ class ProductController extends AbstractController
                     'constraints' => [
                         new File([
                             'maxSize' => '5M',
-                            'maxSizeMessage' => 'File must be inferior to 5MB'
-                        ])
+                            'maxSizeMessage' => 'File must be inferior to 5MB',
+                           
+
+                        ]),
+                        
                     ],
+                    
                 ]),
+                
             ]);
 
             if (0 !== count($violations)) {
@@ -245,35 +209,9 @@ class ProductController extends AbstractController
                     echo $violation->getMessage() . '<br>';
                 }
             }
-
-            if ($files) {
-
-                foreach ($files as $file) {
-
-                    $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
-                    $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
-                    $entityManager->persist($image);
-                }
-            }
-            $product = $form->getData();
-            $entityManager->persist($product);
-
-            $entityManager->flush();
-            return $this->redirectToRoute('list_product');
+            $this->persistFiles($files, $em, $product, $slugger);
         }
-        $tags = $product->getTags();
-
-        $images = $product->getImages();
-
-        return $this->render('product/edit.html.twig', array(
-            'form' => $form->createView(),
-            'tags' => $tags,
-            'images' => $images,
-        ));
     }
-
 
     /**
      * @Route("/product/{id}", name="show_product",  priority=2)
@@ -307,7 +245,7 @@ class ProductController extends AbstractController
     {
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAllArray();
-       
+
         $response = new JsonResponse($products);
         $response->send();
     }
