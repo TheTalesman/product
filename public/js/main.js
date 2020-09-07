@@ -18,4 +18,10 @@ jQuery(document).ready(function () {
         countImgs++;
         updateCounter();
     });
+
+    $(".myTags").tagit();
 });
+
+function buy(){
+    alert("No you won't! hehehe");
+}
