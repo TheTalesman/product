@@ -5,13 +5,17 @@
 
 {%block body %}
 	<h1>{{product.title}}</h1>
-<p>{{product.description}}</p>
-
-{% for img in images %}
-
-	<img width=200 src="../{{img.path}}"/>
-	<label>{{img.title}}</label>
-{% endfor %}
-<hr>
-<a href="../">Voltar</a>
+	<p>{{product.description}}</p>
+	<div class="container">
+		<div class="row">
+			{% for img in images %}
+				<div class="col">
+					<img width="200" src="../{{img.path}}"/>
+					<label class="prod-label">{{img.title}}</label>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<hr>
+	<a href="../">Voltar</a>
 {% endblock %}

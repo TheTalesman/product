@@ -4,8 +4,45 @@
 {% endblock %}
 {%block body %}
 	<div class="row">
-		<div class="col">
+		<div
+			class="col">
+
+
+		
+
+
 			{{form_start(form)}}
+				<!-- Modal -->
+			<div class="modal fade" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalImageLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalImageLabel">Add Images</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div id="image-fields-list" data-prototype="{{ form_widget(form.imagesFiles.vars.prototype)|e }}" data-widget-tags="{{ '<div></div>'|e }}" data-widget-counter="{{ form.imagesFiles|length }}">
+								{% for imageField in form.imagesFiles %}
+									<div class="card" id={{imageField}}>
+
+
+										{{ form_widget(imageField) }}
+
+									</div>
+
+								{% endfor %}
+							</div>
+						</div>
+						<div class="modal-footer">
+
+							<button type="button" class="btn btn-primary add-another" data-list-selector="#image-fields-list">Add another image</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			{{form_widget(form)}}
 
 			{{form_end(form)}}
@@ -18,26 +55,37 @@
 		</div>
 
 		<div class="col">
-        	<a class="btn btn-light" href="#carouselExampleFade" role="button" data-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true">Prev</span>
-					<span class="sr-only">Previous</span>
-				</a>
-				<a class="btn btn-light" href="#carouselExampleFade" role="button" data-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true">Next</span>
-					<span class="sr-only">Next</span>
-				</a>
+			<a class="btn btn-info" href="#carouselExampleFade" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="">Previous</span>
+			</a>
+			<a class="btn btn-info" href="#carouselExampleFade" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="">Next</span>
+			</a>
+			<button type="button" class="btn btn-primary add-another page-button" data-toggle="modal" data-target="#modalImage" data-list-selector="#image-fields-list">
+				Add Image
+			</button>
+			<a class="btn btn-danger" role="button" href="javascript:deleteImage()">
+				Delete
+			</a>
 			<div id="carouselExampleFade" class="carousel carousel-fade" data-ride="carousel">
 				<div class="carousel-inner">
 
 					{% for image in images %}
 
+						<br>
 						<div class="carousel-item">
+							<div class="hidden id">{{image.id}}</div>
 							<img src={{image.path}} class="d-block w-100 img-fluid"/>
-							<label class="label-prod">{{image.title}}</label>
+							<label class="prod-label">{{image.title}}</label>
 						</div>
+						<br>
+
+
 					{% endfor %}
 				</div>
-			
+
 			</div>
 		</div>
 	</div>
@@ -45,6 +93,7 @@
 
 {% block javascripts %}
 
+	<script src="{{ asset('../js/editProduct.js')}}" type="text/javascript" charset="utf-8"></script>
 
-	<script src="../../js/pullTags.js"></script>
+
 {% endblock %}

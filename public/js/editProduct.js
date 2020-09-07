@@ -9,6 +9,20 @@ jQuery(document).ready(function () {
       jQuery('.myTags').tagit();
       $('.carousel-item').first().addClass('active');
       $('#carouselExampleFade').carousel({
-        interval: 2000
+        interval: false
       })
+
+
+      
 });
+
+function deleteImage(){
+  console.log($('.carousel-item.active').find('.id'))
+ var id= $('.carousel-item.active').find('.id').text().trim()
+  if(confirm('Are You sure?' + id)){
+    fetch(`/image/delete/`+id, {
+        method: 'DELETE',
+
+    }).then(res => window.location.reload())
+}
+}

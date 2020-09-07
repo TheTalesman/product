@@ -190,7 +190,7 @@ class ProductController extends AbstractController
      * @Route("/product/edit/{id}", name="edit_product")
      * @Method({"GET","POST"})
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id, SluggerInterface $slugger)
     {
         $product = new Product(null, null, null, null);
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
@@ -220,7 +220,37 @@ class ProductController extends AbstractController
                 $product->addTag($tag);
                 $entityManager->persist($tag);
             }
+            $files = $form->get("imagesFiles")->getData();
+            $validator = Validation::createValidator();
+            $violations = $validator->validate($files, [
 
+                new All([
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '5M',
+                            'maxSizeMessage' => 'File must be inferior to 5MB'
+                        ])
+                    ],
+                ]),
+            ]);
+
+            if (0 !== count($violations)) {
+                foreach ($violations as $violation) {
+                    echo $violation->getMessage() . '<br>';
+                }
+            }
+
+            if ($files) {
+
+                foreach ($files as $file) {
+
+                    $originalFilename = pathinfo($file["file"]->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file["file"]->guessExtension();
+                    $image = $this->imgUploader->upload($file, $product, $originalFilename, $newFilename);
+                    $entityManager->persist($image);
+                }
+            }
             $product = $form->getData();
             $entityManager->persist($product);
 
