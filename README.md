@@ -1,5 +1,5 @@
 # Product Crud
-This is a work challenge for a job at Flexy made with Symphony 5.1. The Project consists of a basic Crud application of products containing tags and images associated.
+This is a work challenge made with Symphony 5.1. The Project consists of a basic Crud application of products containing tags and images associated.
 
 ## Requirements
 Docker
